@@ -1,0 +1,81 @@
+<html>
+
+<head>
+    <title>VSHL API Test</title>
+    <link rel="stylesheet" href="binding.css">
+    <script type="text/javascript" src="AFB.js"></script>
+    <script type="text/javascript" src="amazon.js"></script>
+    <script type="text/javascript" src="binding.js"></script>
+</head>
+
+<body class="page-content" onload="connect()">
+
+    <h1>Voice Service High Level API Tester</h1>
+
+    <button id="connected" onclick="init()">Binder WS Fail</button>
+    <button id="monitoring" onclick="window.open('/monitoring/monitor.html','_monitor_ctl')">Debug/Monitoring</a>
+    </button>
+    <button onclick="clearPre('question'); clearPre('output'); clearPre('outevt');">Clear</button> <br><br>
+    VSHL URL: <input type="text" id="vshl-address" value="192.168.1.44:1063" onchange="connectVshl()"> <br><br>
+    <br>
+    <br>
+
+    <dialog id="agent-event-chooser">
+        <h3 class="dialogheader">Subscribe to the following agent events</h3>
+        <div>
+            <ol>
+                <li>
+                    <input type="checkbox" id="authstate" checked>
+                    <label>voice_authstate_event</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="dialogstate" checked>
+                    <label>voice_dialogstate_event</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="connectionstate" checked>
+                    <label>voice_connectionstate_event</label>
+                </li>
+            </ol>
+        </div>
+        <footer>
+            <button id="agent-subscribe-btn" type="button" style="margin: 10px">Subscribe</button>
+        </footer>
+    </dialog>
+
+    <dialog id="login-with-amazon">
+        <h3 class="dialogheader">Login with Amazon !!</h3>
+        <div id="login-area">
+            <div>
+                Alexa VA URL: <input type="text" id="alexa-va-address" value="192.168.1.44:1063"> <br><br>
+            </div>
+            <footer id ="login-with-amazon-footer">
+                <button id="submit-btn" type="button" style="margin: 10px">Login</button>
+                <button id="cancel-btn" type="button" style="margin: 10px">Cancel</button>
+            </footer>
+        </div>
+    </dialog>
+
+    <div id="top" class="row">
+    <div id='actions' class="col1">
+        <div>
+          <h2>VSHL APIs</h2>
+          <p>APIs that are voiceagent agnostic</p>
+          <button onclick="startListening()">startListening</button>
+          <button onclick="fetchAndRenderVoiceAgents();">enumerateAgents</button>
+        </div>
+
+        <div id="agentsDiv">
+        </div>
+    </div>
+
+    <div id="main" style="visibility:hidden" class="col2">
+        <ol>
+            <li>Question <pre id="question"></pre>
+            <li>Response <pre id="output"></pre>
+            <li>Events: <pre id="outevt"></pre>
+        </ol>
+    </div>
+    </div>
+
+</body>

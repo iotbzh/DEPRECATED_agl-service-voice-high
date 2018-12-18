@@ -1,0 +1,96 @@
+{
+  "$schema": "http://iot.bzh/download/public/schema/json/ctl-schema.json",
+  "metadata": {
+    "uid": "vshl",
+    "version": "1.0",
+    "api": "vshl",
+    "info": "High Level Voice Service APIs"
+  },
+
+  "onload": [{
+    "uid": "loadVoiceAgentsConfig",
+    "info": "Loading the information about voice agents managed by the high level voice service.",
+    "action": "plugin://vshl#loadVoiceAgentsConfig",
+    "args": {
+      "default": "VA-001",
+      "agents": [
+        {
+          "id": "VA-001",
+          "active": true,
+          "name": "Alexa",
+          "api": "alexa-voiceagent",
+          "wakewords": [
+            "alexa",
+            "computer",
+            "echo"
+          ],
+          "activewakeword": "alexa",
+          "description": "Alexa voice assistant by Amazon.",
+          "vendor": "Amazon.com Services Inc"
+        }
+      ]
+    }
+  }],
+
+  "plugins": [{
+    "uid": "vshl",
+    "info": "Plugin to handle high level voice service interface implementation",
+    "libs": [
+      "vshl-api.ctlso"
+    ]
+  }],
+
+  "events": [{
+      "uid": "alexa-voiceagent/voice_authstate_event",
+      "action": "plugin://vshl#onAuthStateEvent"
+    },{
+      "uid": "alexa-voiceagent/voice_connectionstate_event",
+      "action": "plugin://vshl#onConnectionStateEvent"
+    },{
+      "uid": "alexa-voiceagent/voice_dialogstate_event",
+      "action": "plugin://vshl#onDialogStateEvent"
+  }],
+
+  "controls": [{
+      "uid": "startListening",
+      "action": "plugin://vshl#startListening"
+    }, {
+      "uid": "cancelListening",
+      "action": "plugin://vshl#cancelListening"
+    }, {
+      "uid": "subscribe",
+      "action": "plugin://vshl#subscribe"
+    }, {
+      "uid": "enumerateVoiceAgents",
+      "privileges": "urn:AGL:permission:vshl:voiceagents:public",
+      "action": "plugin://vshl#enumerateVoiceAgents"
+    }, {
+      "uid": "setDefaultVoiceAgent",
+      "privileges": "urn:AGL:permission:vshl:voiceagents:public",
+      "action": "plugin://vshl#setDefaultVoiceAgent"
+    }, {
+      "uid": "guiMetadata/publish",
+      "privileges": "urn:AGL:permission:vshl:guiMetadata:public",
+      "action": "plugin://vshl#guiMetadataPublish"
+    }, {
+      "uid": "guiMetadata/subscribe",
+      "privileges": "urn:AGL:permission:vshl:guiMetadata:public",
+      "action": "plugin://vshl#guiMetadataSubscribe"
+    }, {
+      "uid": "phonecontrol/publish",
+      "privileges": "urn:AGL:permission:vshl:phonecontrol:public",
+      "action": "plugin://vshl#phonecontrolPublish"
+    }, {
+      "uid": "phonecontrol/subscribe",
+      "privileges": "urn:AGL:permission:vshl:phonecontrol:public",
+      "action": "plugin://vshl#phonecontrolSubscribe"
+    }, {
+      "uid": "navigation/publish",
+      "privileges": "urn:AGL:permission:vshl:navigation:public",
+      "action": "plugin://vshl#navigationPublish"
+    }, {
+      "uid": "navigation/subscribe",
+      "privileges": "urn:AGL:permission:vshl:navigation:public",
+      "action": "plugin://vshl#navigationSubscribe"
+  }]
+}
