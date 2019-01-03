@@ -138,10 +138,7 @@ CTLP_CAPI(onAuthStateEvent, source, argsJ, eventJ) {
     }
     std::string voiceAgentId(eventJson[EVENTS_JSON_ATTR_VA_ID].get<string>());
 
-    if (!sEventRouter->handleIncomingEvent(eventName, voiceAgentId, json_object_to_json_string(eventJ))) {
-        sLogger->log(Level::ERROR, TAG, "onAuthStateEvent: Failed to handle.");
-        return -1;
-    }
+    sEventRouter->handleIncomingEvent(eventName, voiceAgentId, json_object_to_json_string(eventJ));
 
     return 0;
 }
@@ -159,10 +156,7 @@ CTLP_CAPI(onConnectionStateEvent, source, argsJ, eventJ) {
     }
     std::string voiceAgentId(eventJson[EVENTS_JSON_ATTR_VA_ID].get<string>());
 
-    if (!sEventRouter->handleIncomingEvent(eventName, voiceAgentId, json_object_to_json_string(eventJ))) {
-        sLogger->log(Level::ERROR, TAG, "onConnectionStateEvent: Failed to handle.");
-        return -1;
-    }
+    sEventRouter->handleIncomingEvent(eventName, voiceAgentId, json_object_to_json_string(eventJ));
 
     return 0;
 }
@@ -180,10 +174,7 @@ CTLP_CAPI(onDialogStateEvent, source, argsJ, eventJ) {
     }
     std::string voiceAgentId(eventJson[EVENTS_JSON_ATTR_VA_ID].get<string>());
 
-    if (!sEventRouter->handleIncomingEvent(eventName, voiceAgentId, json_object_to_json_string(eventJ))) {
-        sLogger->log(Level::ERROR, TAG, "onDialogStateEvent: Failed to handle.");
-        return -1;
-    }
+    sEventRouter->handleIncomingEvent(eventName, voiceAgentId, json_object_to_json_string(eventJ));
 
     return 0;
 }

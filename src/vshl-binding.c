@@ -49,6 +49,21 @@ static int ctrlLoadStaticVerbs(afb_dynapi* apiHandle, AFB_ApiVerbs* verbs) {
 // next generation dynamic API-V3 mode
 #include <signal.h>
 
+static int CtrlInitOneApi(AFB_ApiT apiHandle)
+{
+    CtlConfigT *ctrlConfig;
+
+    if(!apiHandle)
+        return -1;
+
+    // Retrieve section config from api handle
+    ctrlConfig = (CtlConfigT *) AFB_ApiGetUserData(apiHandle);
+    if(!ctrlConfig)
+        return -2;
+
+    return CtlConfigExec(apiHandle, ctrlConfig);
+}
+
 static int ctrlLoadOneApi(void* cbdata, AFB_ApiT apiHandle) {
     CtlConfigT* ctrlConfig = (CtlConfigT*)cbdata;
 
@@ -73,7 +88,7 @@ static int ctrlLoadOneApi(void* cbdata, AFB_ApiT apiHandle) {
     afb_dynapi_on_event(apiHandle, CtrlDispatchApiEvent);
 
     // init API function (does not receive user closure ???
-    // afb_dynapi_on_init(apiHandle, CtrlInitOneApi);
+    afb_dynapi_on_init(apiHandle, CtrlInitOneApi);
 
     afb_dynapi_seal(apiHandle);
     return err;
@@ -108,9 +123,6 @@ int afbBindingEntry(afb_dynapi* apiHandle) {
 
     // create one API per config file (Pre-V3 return code ToBeChanged)
     int status = afb_dynapi_new_api(apiHandle, ctrlConfig->api, ctrlConfig->info, 1, ctrlLoadOneApi, ctrlConfig);
-
-    // config exec should be done after api init in order to enable onload to use newly defined ctl API.
-    if (!status) status = CtlConfigExec(apiHandle, ctrlConfig);
 
     return status;
 }
